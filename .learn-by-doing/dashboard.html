@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Master LLM Foundations: Tokens, Context Windows, Transformer Architecture, Temperature &amp; Top-P</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f3;
+      --panel: #ffffff;
+      --text: #242424;
+      --muted: #64665f;
+      --line: #d9dbd2;
+      --active: #1f6f5b;
+      --passed: #2367a0;
+      --pending: #7a6118;
+      --failed: #a23d3d;
+      --blocked: #714aa0;
+      --code: #eceee7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    h1, h2, h3, h4 {
+      line-height: 1.18;
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      font-size: 34px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    h4 {
+      font-size: 15px;
+    }
+
+    p {
+      margin: 6px 0 0;
+    }
+
+    a {
+      color: var(--active);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    code {
+      background: var(--code);
+      border-radius: 5px;
+      padding: 2px 5px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.94em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 6px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .muted, .meta {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .panel, .stage, .challenge {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .facts {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .fact {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+    }
+
+    .fact:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid currentColor;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      color: var(--pending);
+      white-space: nowrap;
+    }
+
+    .badge-active, .badge-available {
+      color: var(--active);
+    }
+
+    .badge-passed {
+      color: var(--passed);
+    }
+
+    .badge-failed, .badge-missing {
+      color: var(--failed);
+    }
+
+    .badge-blocked {
+      color: var(--blocked);
+    }
+
+    .stages {
+      display: grid;
+      gap: 16px;
+    }
+
+    .stage-head, .challenge-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        width: min(100% - 24px, 1120px);
+        padding-top: 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .grid, .challenge-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stage-head, .challenge-head, .fact {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Learn By Doing</h1>
+      <p class="muted">Master LLM Foundations: Tokens, Context Windows, Transformer Architecture, Temperature &amp; Top-P</p>
+    </header>
+
+    <section class="grid" aria-label="Current learning state">
+      <article class="panel">
+        <h2>Current challenge</h2><span class="badge badge-active">active</span><h3>Byte-Pair Encoding (BPE) Tokenizer from Scratch</h3><p>Path: <a href="../stage-01-tokens/challenge-01-bpe-tokenizer/README.md"><code>stage-01-tokens/challenge-01-bpe-tokenizer</code></a></p><p>Validation: <code>python3 -m unittest test_tokenizer.py</code></p><p class="muted">Last result: Validation pending.</p>
+      </article>
+      <article class="panel">
+        <h2>Progress</h2>
+        <div class="facts">
+          <div class="fact"><span>Level</span><strong>Backend Engineer (Intermediate Python)</strong></div>
+          <div class="fact"><span>Platform</span><strong>darwin arm64</strong></div>
+          <div class="fact"><span>Stages</span><strong>4</strong></div>
+          <div class="fact"><span>Challenges</span><strong>0 / 9 passed</strong></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel" aria-label="Environment">
+      <h2>Environment</h2>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Status</th><th>Version</th><th>Path</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>python3</td><td><span class="badge badge-available">available</span></td><td>Python 3.14.7</td><td><code>/opt/homebrew/bin/python3</code></td></tr>
+<tr><td>git</td><td><span class="badge badge-available">available</span></td><td>git version 2.50.1</td><td><code>/usr/bin/git</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section aria-label="Roadmap" style="margin-top: 24px;">
+      <h2>Roadmap</h2>
+      <div class="stages">
+        <section class="stage"><div class="stage-head"><div><h3>stage-01: Tokens &amp; Byte-Pair Encoding (BPE)</h3><p>Understand how text becomes discrete token IDs, build a BPE tokenizer from scratch, and analyze token economics and context budgets.</p></div><span class="badge badge-pending">pending</span></div><p class="muted">Completion: Pass all BPE encoding/decoding and token budgeting tests.</p><div class="challenge-grid"><article class="challenge"><div class="challenge-head"><h4>Byte-Pair Encoding (BPE) Tokenizer from Scratch</h4><span class="badge badge-active">active</span></div><p class="meta">ID: <code>stage-01-challenge-01</code></p><p>Implement subword vocabulary learning, frequency-based pair merging, string encoding to token IDs, and decoding token IDs back to strings.</p><p>Path: <a href="../stage-01-tokens/challenge-01-bpe-tokenizer/README.md"><code>stage-01-tokens/challenge-01-bpe-tokenizer</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Token Economics, Special Tokens &amp; Context Budgeting</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>stage-01-challenge-02</code></p><p>Handle special tokens (&lt;bos&gt;, &lt;eos&gt;, &lt;pad&gt;, &lt;unk&gt;), compute token-to-byte compression ratios, and build a context budget manager for backend requests.</p><p>Path: <a href="../stage-01-tokens/challenge-02-token-budget/README.md"><code>stage-01-tokens/challenge-02-token-budget</code></a></p></article></div></section>
+<section class="stage"><div class="stage-head"><div><h3>stage-02: Context Windows &amp; Attention Mechanics</h3><p>Master Query-Key-Value attention math, causal autoregressive masking, context length constraints, and KV caching for fast inference.</p></div><span class="badge badge-pending">pending</span></div><p class="muted">Completion: Pass all matrix attention, causal masking, and KV-cache benchmark tests.</p><div class="challenge-grid"><article class="challenge"><div class="challenge-head"><h4>Scaled Dot-Product Self-Attention Engine</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>stage-02-challenge-01</code></p><p>Implement Q, K, V projections, scaled dot-product scoring (QK^T / sqrt(d_k)), causal triangular masking (future token blinding), and softmax attention distribution.</p><p>Path: <a href="../stage-02-attention/challenge-01-scaled-dot-product/README.md"><code>stage-02-attention/challenge-01-scaled-dot-product</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Context Window Limits &amp; KV-Cache Engine</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>stage-02-challenge-02</code></p><p>Implement context window slicing, sliding-window attention, and a KV-Cache manager that avoids O(N^2) recomputation during autoregressive token generation.</p><p>Path: <a href="../stage-02-attention/challenge-02-kv-cache/README.md"><code>stage-02-attention/challenge-02-kv-cache</code></a></p></article></div></section>
+<section class="stage"><div class="stage-head"><div><h3>stage-03: Transformer Architecture &amp; Forward Pass</h3><p>Build the core components of a decoder-only Transformer: embeddings, positional encodings, multi-head attention, residual connections, and output logits.</p></div><span class="badge badge-pending">pending</span></div><p class="muted">Completion: Pass forward-pass tensor dimension checks and next-token prediction tests.</p><div class="challenge-grid"><article class="challenge"><div class="challenge-head"><h4>Embeddings, Positional Encodings &amp; Multi-Head Split</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>stage-03-challenge-01</code></p><p>Implement token embedding lookup, sinusoidal positional encodings, and multi-head attention projection/concatenation.</p><p>Path: <a href="../stage-03-transformer/challenge-01-multihead-attention/README.md"><code>stage-03-transformer/challenge-01-multihead-attention</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Decoder-Only Mini-Transformer Block &amp; Logits Generation</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>stage-03-challenge-02</code></p><p>Assemble a full Decoder-only Transformer layer (MHA + Feed-Forward Network + LM Head) that maps input token sequences to unnormalized vocabulary logits.</p><p>Path: <a href="../stage-03-transformer/challenge-02-mini-transformer/README.md"><code>stage-03-transformer/challenge-02-mini-transformer</code></a></p></article></div></section>
+<section class="stage"><div class="stage-head"><div><h3>stage-04: Decoding &amp; Sampling Strategies (Temperature &amp; Top-P)</h3><p>Master how models convert raw logits into actual words: temperature scaling, Top-K filtering, Top-P (nucleus) sampling, and end-to-end autoregressive generation.</p></div><span class="badge badge-pending">pending</span></div><p class="muted">Completion: Pass all temperature scaling, nucleus sampling distribution tests, and text generation loop.</p><div class="challenge-grid"><article class="challenge"><div class="challenge-head"><h4>Logit Transformation, Numerical Softmax &amp; Temperature Scaling</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>stage-04-challenge-01</code></p><p>Implement numerically stable Softmax and Temperature scaling (logits / T), demonstrating greedy argmax (T-&gt;0), balanced sampling (T=0.7), and high entropy (T=2.0).</p><p>Path: <a href="../stage-04-sampling/challenge-01-temperature-scaling/README.md"><code>stage-04-sampling/challenge-01-temperature-scaling</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Top-K and Top-P (Nucleus) Sampling Engine</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>stage-04-challenge-02</code></p><p>Implement Top-K filtering and Top-P (cumulative probability cutoff) sampling to prevent low-probability tail hallucinations while preserving creativity.</p><p>Path: <a href="../stage-04-sampling/challenge-02-top-k-top-p/README.md"><code>stage-04-sampling/challenge-02-top-k-top-p</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>End-to-End Autoregressive Generation Pipeline</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>stage-04-challenge-03</code></p><p>Wire together Tokenizer + Transformer + KV-Cache + Temperature/Top-P Sampler into a full inference generation loop that outputs streamed text.</p><p>Path: <a href="../stage-04-sampling/challenge-03-generation-pipeline/README.md"><code>stage-04-sampling/challenge-03-generation-pipeline</code></a></p></article></div></section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

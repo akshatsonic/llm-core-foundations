@@ -1,0 +1,99 @@
+{
+  "stages": [
+    {
+      "id": "stage-01",
+      "title": "Tokens & Byte-Pair Encoding (BPE)",
+      "objective": "Understand how text becomes discrete token IDs, build a BPE tokenizer from scratch, and analyze token economics and context budgets.",
+      "completion_criteria": "Pass all BPE encoding/decoding and token budgeting tests.",
+      "planned_challenges": [
+        {
+          "id": "stage-01-challenge-01",
+          "title": "Byte-Pair Encoding (BPE) Tokenizer from Scratch",
+          "objective": "Implement subword vocabulary learning, frequency-based pair merging, string encoding to token IDs, and decoding token IDs back to strings.",
+          "expected_outcome": "A pure Python BPE tokenizer class handling vocabulary creation, merges, encoding, and decoding.",
+          "project_shape": "standalone challenge with unit tests"
+        },
+        {
+          "id": "stage-01-challenge-02",
+          "title": "Token Economics, Special Tokens & Context Budgeting",
+          "objective": "Handle special tokens (<bos>, <eos>, <pad>, <unk>), compute token-to-byte compression ratios, and build a context budget manager for backend requests.",
+          "expected_outcome": "A TokenBudgetManager that calculates prompt/completion token limits and formats system/user prompts safely.",
+          "project_shape": "standalone challenge with unit tests"
+        }
+      ]
+    },
+    {
+      "id": "stage-02",
+      "title": "Context Windows & Attention Mechanics",
+      "objective": "Master Query-Key-Value attention math, causal autoregressive masking, context length constraints, and KV caching for fast inference.",
+      "completion_criteria": "Pass all matrix attention, causal masking, and KV-cache benchmark tests.",
+      "planned_challenges": [
+        {
+          "id": "stage-02-challenge-01",
+          "title": "Scaled Dot-Product Self-Attention Engine",
+          "objective": "Implement Q, K, V projections, scaled dot-product scoring (QK^T / sqrt(d_k)), causal triangular masking (future token blinding), and softmax attention distribution.",
+          "expected_outcome": "A self-attention module calculating correct attention weights and weighted value outputs in pure Python/matrix math.",
+          "project_shape": "standalone challenge with unit tests"
+        },
+        {
+          "id": "stage-02-challenge-02",
+          "title": "Context Window Limits & KV-Cache Engine",
+          "objective": "Implement context window slicing, sliding-window attention, and a KV-Cache manager that avoids O(N^2) recomputation during autoregressive token generation.",
+          "expected_outcome": "A KVCache implementation that stores and appends Key/Value tensors per token step, reducing step complexity from O(N) to O(1).",
+          "project_shape": "standalone challenge with unit tests"
+        }
+      ]
+    },
+    {
+      "id": "stage-03",
+      "title": "Transformer Architecture & Forward Pass",
+      "objective": "Build the core components of a decoder-only Transformer: embeddings, positional encodings, multi-head attention, residual connections, and output logits.",
+      "completion_criteria": "Pass forward-pass tensor dimension checks and next-token prediction tests.",
+      "planned_challenges": [
+        {
+          "id": "stage-03-challenge-01",
+          "title": "Embeddings, Positional Encodings & Multi-Head Split",
+          "objective": "Implement token embedding lookup, sinusoidal positional encodings, and multi-head attention projection/concatenation.",
+          "expected_outcome": "A MultiHeadAttention block with residual skip connections and normalization.",
+          "project_shape": "standalone challenge with unit tests"
+        },
+        {
+          "id": "stage-03-challenge-02",
+          "title": "Decoder-Only Mini-Transformer Block & Logits Generation",
+          "objective": "Assemble a full Decoder-only Transformer layer (MHA + Feed-Forward Network + LM Head) that maps input token sequences to unnormalized vocabulary logits.",
+          "expected_outcome": "A MiniTransformer forward pass producing [batch, seq_len, vocab_size] logits.",
+          "project_shape": "standalone challenge with unit tests"
+        }
+      ]
+    },
+    {
+      "id": "stage-04",
+      "title": "Decoding & Sampling Strategies (Temperature & Top-P)",
+      "objective": "Master how models convert raw logits into actual words: temperature scaling, Top-K filtering, Top-P (nucleus) sampling, and end-to-end autoregressive generation.",
+      "completion_criteria": "Pass all temperature scaling, nucleus sampling distribution tests, and text generation loop.",
+      "planned_challenges": [
+        {
+          "id": "stage-04-challenge-01",
+          "title": "Logit Transformation, Numerical Softmax & Temperature Scaling",
+          "objective": "Implement numerically stable Softmax and Temperature scaling (logits / T), demonstrating greedy argmax (T->0), balanced sampling (T=0.7), and high entropy (T=2.0).",
+          "expected_outcome": "A TemperatureSampler function passing probability distribution and entropy tests.",
+          "project_shape": "standalone challenge with unit tests"
+        },
+        {
+          "id": "stage-04-challenge-02",
+          "title": "Top-K and Top-P (Nucleus) Sampling Engine",
+          "objective": "Implement Top-K filtering and Top-P (cumulative probability cutoff) sampling to prevent low-probability tail hallucinations while preserving creativity.",
+          "expected_outcome": "A TopKTopPSampler class that correctly truncates and renormalizes probability distributions.",
+          "project_shape": "standalone challenge with unit tests"
+        },
+        {
+          "id": "stage-04-challenge-03",
+          "title": "End-to-End Autoregressive Generation Pipeline",
+          "objective": "Wire together Tokenizer + Transformer + KV-Cache + Temperature/Top-P Sampler into a full inference generation loop that outputs streamed text.",
+          "expected_outcome": "A complete generator function that takes prompt text, streams next tokens, and stops on <eos> or max_tokens.",
+          "project_shape": "standalone challenge with unit tests"
+        }
+      ]
+    }
+  ]
+}
