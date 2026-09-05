@@ -3,6 +3,8 @@ Context Window & Token Budget Manager
 Stage 01 - Challenge 02
 """
 
+from collections import deque
+
 
 class TokenBudgetManager:
     GLOBAL_BOS_OVERHEAD = 1        # 1 token for <bos>
@@ -47,6 +49,12 @@ class TokenBudgetManager:
         # 1. Strip whitespace.
         # 2. If text is empty, return 0.
         # 3. Otherwise, split on whitespace and return the count of words/tokens.
+        words = text.strip().split(' ')
+        
+        sets = set(words)
+        if(len(sets)==1 and sets.pop()==''):
+            return 0
+        return len(words)
         raise NotImplementedError("Implement count_tokens")
 
     def calculate_available_budget(self, current_prompt_tokens: int) -> int:
@@ -64,6 +72,8 @@ class TokenBudgetManager:
         # TODO: Implement this function
         # 1. Compute max_allowed_prompt_tokens = self.max_context_tokens - self.reserved_completion_tokens
         # 2. Return max(0, max_allowed_prompt_tokens - current_prompt_tokens)
+
+        return max(0, (self.max_context_tokens-self.reserved_completion_tokens)-current_prompt_tokens)
         raise NotImplementedError("Implement calculate_available_budget")
 
     def format_and_truncate_messages(
@@ -92,4 +102,56 @@ class TokenBudgetManager:
         # 4. While chat_msgs is not empty and total tokens > max_allowed_prompt:
         #    chat_msgs.pop(0)  # Drop oldest non-system message
         # 5. Return (system_msgs + chat_msgs, total_tokens)
+
+        max_allowed_prompt = self.max_context_tokens - self.reserved_completion_tokens
+        cnt=0
+        q = deque()
+        total=self.GLOBAL_BOS_OVERHEAD
+        for m in messages:
+            total+=self.count_tokens(m['content'])+self.MESSAGE_FRAMING_OVERHEAD
+            # print(total)
+            if(m['role']!='system'):
+                q.append(m)
+        # print(total)
+        while total>max_allowed_prompt:
+            total-=self.count_tokens(q.popleft()['content'])+self.MESSAGE_FRAMING_OVERHEAD
+            cnt+=1
+        # print(total)
+        newList=list()
+        cnt2=0
+        for m in messages:
+            if m['role']!='system' and cnt2<cnt:
+                cnt2+=1
+                continue
+            else:
+                newList.append(m)
+        return (newList,total)
         raise NotImplementedError("Implement format_and_truncate_messages")
+
+
+
+# def count_tokens2(text: str) -> int:
+#         """
+#         Estimates the number of tokens in a text string.
+#         Uses a whitespace and subword approximation: each whitespace-separated word counts as 1 token.
+#         Returns 0 for empty or whitespace-only text.
+        
+#         Args:
+#             text: Input string.
+            
+#         Returns:
+#             Number of tokens.
+#         """
+#         # TODO: Implement this function
+#         # 1. Strip whitespace.
+#         # 2. If text is empty, return 0.
+#         # 3. Otherwise, split on whitespace and return the count of words/tokens.
+#         words = text.split(' ')
+#         sets = set(words)
+#         if(len(sets)==1 and sets.pop()==''):
+#             return 0
+#         return len(words)+3
+#         raise NotImplementedError("Implement count_tokens")
+
+# print(count_tokens2(text="   "))
+
